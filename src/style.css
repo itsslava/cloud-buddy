@@ -1,5 +1,27 @@
 :root {
+	--color-primary: #fff;
+	--color-primary-inverted: #000;
+	--color-background: #343d4b;
+	--color-bg-main: #222831;
+	--color-bg-card: #272e37;
+
+	--gradient: linear-gradient(91deg, rgba(144, 217, 224, 0.9) 0.2%, rgba(84, 96, 230, 0.9) 100%);
+	--gradient-inverted: linear-gradient(
+		256deg,
+		rgba(144, 217, 224, 0.9) 9%,
+		rgba(84, 96, 230, 0.9) 92%
+	);
+
+	--font: 'Montserrat', sans-serif;
+}
+
+body {
+	color: var(--color-primary);
+	font-family: var(--font);
+	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	background-color: var(--color-background);
 }
