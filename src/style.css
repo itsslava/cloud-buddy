@@ -24,4 +24,8 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 
 	background-color: var(--color-background);
+
+	display: grid;
+	place-items: center;
+	min-height: 100vh; /* выравнивает по центру относительно вертикальной плоскости */
 }
