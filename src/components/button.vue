@@ -16,6 +16,15 @@
 	font-size: 20px;
 	font-family: var(--font);
 	cursor: pointer;
+
+	height: 53px;
+
+	width: 100%;
+
+	display: flex;
+	gap: 9px;
+	align-items: center;
+	justify-content: center;
 }
 
 .button:hover {
