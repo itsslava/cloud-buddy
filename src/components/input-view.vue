@@ -1,5 +1,10 @@
-<script setup></script>
-<template><input class="input" /></template>
+<script setup>
+const data = defineModel({ type: String, required: true });
+// const additionallData = defineModel('additional', { type: String });
+</script>
+<template>
+	<input v-model="data" class="input" />
+</template>
 <style scoped>
 .input {
 	color: var(--color-white);
