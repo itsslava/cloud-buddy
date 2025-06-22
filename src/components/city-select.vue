@@ -1,9 +1,13 @@
 <script setup>
 import Button from './button.vue';
-import InputView from './input-view.vue';
+import Input from './input.vue';
 import IconLocation from '../icons/location-icon.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { defineEmits } from 'vue';
+
+let isEdited = ref(false);
+
+let city = ref('Paris');
 
 const emit = defineEmits({
 	selectCity(payload) {
@@ -11,25 +15,23 @@ const emit = defineEmits({
 	},
 });
 
-let isEdited = ref(false);
-
-let city = ref('Texas');
-
 function edit() {
 	isEdited.value = true;
 }
 
+onMounted(() => {
+	emit('selectCity', city.value);
+});
+
 function select() {
 	isEdited.value = false;
-	emit('selectCity', 'Paris');
+	emit('selectCity', city.value);
 }
 </script>
 <template>
 	<div class="city-select">
-		{{ city }}
 		<div v-if="isEdited" class="city-input">
-			<!-- <InputView v-model="city" v-model:additional="city" placeholder="Enter city" /> -->
-			<InputView v-model="city" v-model:additional="city" placeholder="Enter city" />
+			<Input v-model="city" v-focus placeholder="Enter city" @keyup.enter="select()" />
 			<Button @click="select()">Save</Button>
 		</div>
 		<Button v-else @click="edit()">
