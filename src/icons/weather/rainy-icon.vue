@@ -3,11 +3,10 @@ const { color = 'white', size = 54 } = defineProps({ color: String, size: Number
 </script>
 <template>
 	<svg
-		width="54"
-		height="54"
+		:width="size"
+		:height="size"
 		viewBox="0 0 54 54"
 		fill="none"
-		:style="{ scale: size / 54 }"
 		xmlns="http://www.w3.org/2000/svg"
 	>
 		<g clip-path="url(#clip0_102_44)">
