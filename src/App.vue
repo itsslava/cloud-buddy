@@ -1,24 +1,22 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, provide, watch, onMounted } from 'vue';
+import PanelRight from './components/panel-right.vue';
+import { cityProvide, API_ENDPOINT } from './constants.js';
 
-import Stat from './components/stat.vue';
-import Error from './components/error.vue';
-import CitySelect from './components/city-select.vue';
-import WeatherCard from './components/weather-card.vue';
+const data = ref([]);
+const error = ref();
+const activeIndex = ref(0);
+const city = ref('Paris');
 
-const API_ENDPOINT = 'https://api.weatherapi.com/v1';
+provide(cityProvide, city);
 
-let data = ref();
-let error = ref();
-let activeIndex = ref(0);
+watch(city, () => {
+	getCity(city.value);
+});
 
-const dataModified = computed(() => {
-	return [
-		{ label: 'Humidity', stat: data.value.current.humidity + ' %' },
-		{ label: 'Cloud', stat: data.value.current.cloud + ' %' },
-		{ label: 'Wind', stat: data.value.current.wind_mph + ' m/h' },
-	];
+onMounted(() => {
+	getCity(city.value);
 });
 
 async function getCity(city) {
@@ -36,52 +34,40 @@ async function getCity(city) {
 	}
 	error.value = null;
 	data.value = await res.json();
-	console.log(data.value);
 }
 </script>
 
 <template>
-	<main class="right-panel">
-		<Error :error="error?.error?.message" />
-		<div v-if="data" class="weather-info">
-			<div class="weather-stat">
-				<Stat v-for="item in dataModified" v-bind="item" :key="item.label" />
-			</div>
-			<div class="weather-card-list">
-				<WeatherCard
-					v-for="(item, i) in data.forecast.forecastday"
-					:key="item.date"
-					:weather-code="item.day.condition.code"
-					:temp="item.day.avgtemp_c"
-					:date="new Date(item.date)"
-					:is-active="activeIndex == i"
-					@click="() => (activeIndex = i)"
-				/>
-			</div>
+	<main class="main">
+		<div class="left-panel"></div>
+		<div class="right-panel">
+			<PanelRight
+				:data="data"
+				:error="error"
+				:active-index="activeIndex"
+				@select-index="(i) => (activeIndex = i)"
+			/>
 		</div>
-		<CitySelect @select-city="getCity" />
 	</main>
 </template>
 
 <style scoped>
+.main {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 .right-panel {
 	background: var(--color-bg-main);
 	padding: 60px 50px;
-	border-radius: 25px;
+	border-radius: 0 25px 25px 0;
 }
-.weather-card-list {
-	display: flex;
-	gap: 1px;
-}
-.weather-info {
-	display: flex;
-	flex-direction: column;
-	gap: 80px;
-	margin-bottom: 70px;
-}
-.weather-stat {
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
+.left-panel {
+	width: 500px;
+	height: 680px;
+	border-radius: 30px;
+	background-image: url('/public/right-panel.png');
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 </style>
