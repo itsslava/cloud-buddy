@@ -2,9 +2,10 @@
 <script setup>
 import { ref, provide, watch, onMounted } from 'vue';
 import PanelRight from './components/panel-right.vue';
+import PanelLeft from './components/panel-left.vue';
 import { cityProvide, API_ENDPOINT } from './constants.js';
 
-const data = ref([]);
+const data = ref();
 const error = ref();
 const activeIndex = ref(0);
 const city = ref('Paris');
@@ -34,16 +35,19 @@ async function getCity(city) {
 	}
 	error.value = null;
 	data.value = await res.json();
+	console.log(data.value);
 }
 </script>
 
 <template>
 	<main class="main">
-		<div class="left-panel"></div>
+		<div class="left-panel">
+			<PanelLeft v-if="data" :day-data="data.forecast.forecastday[activeIndex]" />
+		</div>
 		<div class="right-panel">
 			<PanelRight
-				:data="data"
-				:error="error"
+				:data
+				:error
 				:active-index="activeIndex"
 				@select-index="(i) => (activeIndex = i)"
 			/>

@@ -19,15 +19,18 @@ const statData = computed(() => {
 		return [];
 	}
 	return [
-		{ label: 'Humidity', stat: data.current.humidity + ' %' },
-		{ label: 'Cloud', stat: data.current.cloud + ' %' },
-		{ label: 'Wind', stat: data.current.wind_mph + ' m/h' },
+		{ label: 'Humidity', stat: data.forecast.forecastday[activeIndex].day.avghumidity + ' %' },
+		{
+			label: 'Cloud',
+			stat: data.forecast.forecastday[activeIndex].day.daily_chance_of_rain + ' %',
+		},
+		{ label: 'Wind', stat: data.forecast.forecastday[activeIndex].day.maxwind_mph + ' m/h' },
 	];
 });
 </script>
 <template>
-	<Error :error="error?.error?.message" />
-	<div v-if="data.current" class="weather-info">
+	<Error v-if="error" :error="error.error.message" />
+	<div v-if="data" class="weather-info">
 		<div class="weather-stat">
 			<Stat v-for="item in statData" v-bind="item" :key="item.label" />
 		</div>
